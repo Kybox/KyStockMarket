@@ -1,0 +1,7 @@
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost/kystockmarket
+  thymeleaf:
+    cache: false

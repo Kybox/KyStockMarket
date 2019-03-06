@@ -3,11 +3,15 @@ package fr.kybox.kystockmarket.web.controller;
 import fr.kybox.kystockmarket.domain.entity.Society;
 import fr.kybox.kystockmarket.repository.SocietyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.result.view.Rendering;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@RestController
+@Controller
 public class SocietyController {
 
     private final SocietyRepository societyRepository;
@@ -15,6 +19,13 @@ public class SocietyController {
     @Autowired
     public SocietyController(SocietyRepository societyRepository) {
         this.societyRepository = societyRepository;
+    }
+
+    @GetMapping(value = "/companies")
+    public String findSocieties(final Model model) {
+
+        model.addAttribute("companies", societyRepository.findAll());
+        return "index";
     }
 
     @GetMapping(value = "/society/all")

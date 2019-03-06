@@ -64,7 +64,7 @@ public class TransactionController {
         return transactionRepository.findAll();
     }
 
-    @GetMapping(value = "transaction/stream/{id}", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+    @GetMapping(value = "transaction/stream/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Transaction> streamTransactionById(@PathVariable String id) {
 
         return societyRepository
@@ -77,7 +77,7 @@ public class TransactionController {
                         Transaction transaction = new Transaction();
                         transaction.setInstant(Instant.now());
                         transaction.setSociety(s);
-                        transaction.setPrice(s.getPrice() * (1 + (Math.random() * 10 - 6) / 100));
+                        transaction.setPrice(s.getPrice() * (1 + (Math.random() * 30) / 100));
                         return transaction;
                     }));
 
