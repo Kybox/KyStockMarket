@@ -26,29 +26,34 @@ public class KyStockMarketApplication {
 
             societyRepository
                     .deleteAll()
-                    .subscribe(null, null, ()-> Stream.of("BP", "SG", "BNP", "AXA")
-                            .forEach(s -> societyRepository
-                                            .save(new Society(s, s, Math.random()*1000))
-                                            .subscribe(System.out::println)
-                            ));
+                    .subscribe(null, null, ()-> {
+                        Stream.of("BP", "SG", "BNP", "AXA")
+                            .forEach(s -> {
+                                societyRepository
+                                        .save(new Society(s, s, Math.random() * 1000))
+                                        .subscribe(System.out::println);
+                            });
 
-            transactionRepository
-                    .deleteAll()
-                    .subscribe(null, null, ()-> Stream.of("BP", "SG", "BNP", "AXA")
-                            .forEach(s -> societyRepository
-                                            .findById(s)
-                                            .subscribe(society -> {
-                                                for (int i = 0; i < 10; i++){
-                                                    Transaction t = new Transaction();
-                                                    t.setInstant(Instant.now());
-                                                    t.setSociety(society);
-                                                    t.setPrice(society.getPrice() * (1 + (Math.random() * 12 - 6) / 100));
-                                                    transactionRepository
-                                                            .save(t)
-                                                            .subscribe(System.out::println);
-                                                }
-                                            })
-                            ));
+                        transactionRepository
+                                .deleteAll()
+                                .subscribe(null, null, ()-> {
+                                    Stream.of("BP", "SG", "BNP", "AXA")
+                                            .forEach(s -> societyRepository
+                                                    .findById(s)
+                                                    .subscribe(society -> {
+                                                        for (int i = 0; i < 10; i++){
+                                                            Transaction t = new Transaction();
+                                                            t.setInstant(Instant.now());
+                                                            t.setSociety(society);
+                                                            t.setPrice(society.getPrice() * (1 + (Math.random() * 12 - 6) / 100));
+                                                            transactionRepository
+                                                                    .save(t)
+                                                                    .subscribe(System.out::println);
+                                                        }
+                                                    })
+                                            );
+                                });
+                    });
 
             System.out.println("This line is displayed before all operations");
         };
